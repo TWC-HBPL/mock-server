@@ -1,6 +1,6 @@
 # mockservice.py
-from db import SessionLocal
-from models import Log, MockResponse
+from app.db import SessionLocal
+from app.models import MockResponse
 import json
 
 

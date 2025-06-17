@@ -1,8 +1,8 @@
 # main.py
 from fastapi import FastAPI
 
-from controller.MockController import router as mock_router
-from db import init_db
+from app.controller.MockController import router as mock_router
+from app.db import init_db
 
 
 app = FastAPI()

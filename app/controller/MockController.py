@@ -4,17 +4,17 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from db import SessionLocal
-from service.MockService import (
+from app.db import SessionLocal
+from app.service.MockService import (
     save_mock_response,
     get_all_mocks,
     get_mock_response,
     update_mock_response, delete_mock_response
 )
-from models import Log
+from app.models import Log
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/")

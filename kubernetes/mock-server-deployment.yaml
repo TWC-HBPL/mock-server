@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mock-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-server
+  template:
+    metadata:
+      labels:
+        app: mock-server
+    spec:
+      containers:
+        - name: mock-server
+          image: <your-registry>/mock-server:latest
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: db-storage
+              mountPath: /app/sqlite
+      volumes:
+        - name: db-storage
+          emptyDir: {}  # Or use PVC if you want persistence
