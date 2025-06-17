@@ -1,12 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mock-server
+  name: mockserver-service
+  namespace: mockserver-ns
 spec:
   selector:
-    app: mock-server
+    app: mockserver
+  type: NodePort
   ports:
-    - protocol: TCP
+    - name: http
       port: 80
       targetPort: 8000
-  type: LoadBalancer  # Or NodePort / ClusterIP depending on your setup
+

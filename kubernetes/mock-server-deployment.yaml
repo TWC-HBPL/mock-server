@@ -1,25 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mock-server
+  name: mockserver
+  namespace: mockserver-ns
+  labels:
+    app: mockserver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mock-server
+      app: mockserver
   template:
     metadata:
       labels:
-        app: mock-server
+        app: mockserver
     spec:
       containers:
-        - name: mock-server
-          image: <your-registry>/mock-server:latest
+        - name: mockserver
+          image: shashank752/experiment:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           volumeMounts:
             - name: db-storage
-              mountPath: /app/sqlite
+              mountPath: /app/mock.db
+              subPath: mock.db
       volumes:
         - name: db-storage
-          emptyDir: {}  # Or use PVC if you want persistence
+          emptyDir: {}
