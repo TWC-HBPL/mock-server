@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Mock</title>
+</head>
+<body>
+    <h2>Create a Mock Endpoint</h2>
+    <form method="post" action="/mock-ui">
+        <label>Endpoint Path:</label><br>
+        <input type="text" name="path" placeholder="/api/v1/your-endpoint" required style="width: 400px;"><br><br>
+
+        <label>HTTP Method:</label><br>
+        <select name="method">
+            <option>GET</option>
+            <option>POST</option>
+            <option>PUT</option>
+            <option>DELETE</option>
+        </select><br><br>
+
+        <label>Mock Response (JSON):</label><br>
+        <textarea name="response" rows="10" cols="60" required>{"message": "Hello"}</textarea><br><br>
+
+        <button type="submit">Save Mock</button>
+    </form>
+
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+</body>
+</html>
