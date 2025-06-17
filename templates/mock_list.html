@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mock List</title>
+</head>
+<body>
+    <h1>All Mocked Endpoints</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Path</th>
+            <th>Method</th>
+            <th>Response</th>
+            <th>Action</th>
+        </tr>
+        {% for mock in mocks %}
+        <tr>
+    <form method="post" action="/update-mock">
+        <td>
+            {{ mock.id }}
+            <input type="hidden" name="mock_id" value="{{ mock.id }}">
+        </td>
+        <td>
+            <input type="text" name="path" value="{{ mock.path }}">
+        </td>
+        <td>
+            <select name="method">
+                <option value="GET" {% if mock.method == 'GET' %}selected{% endif %}>GET</option>
+                <option value="POST" {% if mock.method == 'POST' %}selected{% endif %}>POST</option>
+                <option value="PUT" {% if mock.method == 'PUT' %}selected{% endif %}>PUT</option>
+                <option value="DELETE" {% if mock.method == 'DELETE' %}selected{% endif %}>DELETE</option>
+            </select>
+        </td>
+        <td>
+            <textarea name="response" rows="6" cols="50">{{ mock.response }}</textarea>
+        </td>
+        <td>
+            <button type="submit">Update</button>
+    </form>
+
+    <form method="post" action="/delete-mock" style="display:inline;">
+        <input type="hidden" name="mock_id" value="{{ mock.id }}">
+        <button type="submit" onclick="return confirm('Delete this mock?')">Delete</button>
+    </form>
+        </td>
+</tr>
+
+        {% endfor %}
+    </table>
+
+    <p><a href="/mock-ui">Create New Mock</a></p>
+</body>
+</html>
