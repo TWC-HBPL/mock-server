@@ -17,13 +17,13 @@ spec:
     spec:
       containers:
         - name: mockserver
-          image: shashank752/experiment:latest
+          image: 835126668815.dkr.ecr.ap-south-1.amazonaws.com/ecr-testing-api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
           volumeMounts:
             - name: db-storage
-              mountPath: /app/mock.db
+              mountPath: /mock.db
               subPath: mock.db
       volumes:
         - name: db-storage
