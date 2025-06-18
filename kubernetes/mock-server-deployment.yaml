@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mockserver
-  namespace: mockserver-ns
+  namespace: mockserver
   labels:
     app: mockserver
 spec:

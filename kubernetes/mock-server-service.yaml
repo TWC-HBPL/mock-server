@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mockserver-service
-  namespace: mockserver-ns
+  namespace: mockserver
 spec:
   selector:
     app: mockserver
