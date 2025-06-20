@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: mockserver
-          image: 835126668815.dkr.ecr.ap-south-1.amazonaws.com/ecr-testing-api:latest
+          image: 835126668815.dkr.ecr.ap-south-1.amazonaws.com/ecr-testing-api:__IMAGE_TAG__
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
