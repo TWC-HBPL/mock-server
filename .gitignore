@@ -1,0 +1,39 @@
+# IDE files
+.idea/
+.vscode/
+
+# Python virtual environments
+.venv/
+env/
+venv/
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# Database files
+mock.db
+
+# Logs
+*.log
+
+# Coverage reports
+.coverage
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+
+# Node modules (if any frontend)
+node_modules/
+
+# Qodo (if used)
+.qodo/
