@@ -25,6 +25,54 @@ spec:
             - name: db-storage
               mountPath: /mock.db
               subPath: mock.db
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
       volumes:
         - name: db-storage
           emptyDir: {}
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: mockserver-svc
+  namespace: mockserver
+  labels:
+    app: mockserver
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: mockserver
+----
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mockserver-vs
+  namespace: mockserver
+  labels:
+    app: mockserver
+spec:
+  gateways:
+  - istio-system/testing-api-gateway
+  hosts:
+  - testing-consumer-app.thirdwavecoffee.in
+  http:
+  - match:
+    - uri:
+        prefix: /mockserver/
+    rewrite:
+      uri: '/'
+    route:
+    - destination:
+        host: mockserver-svc
+        port:
+          number: 80
