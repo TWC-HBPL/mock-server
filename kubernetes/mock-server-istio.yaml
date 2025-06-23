@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mockserver-vs
+  namespace: mockserver
+  labels:
+    app: mockserver
+spec:
+  gateways:
+  - istio-system/testing-api-gateway
+  hosts:
+  - testing-consumer-app.thirdwavecoffee.in
+  http:
+  - match:
+    - uri:
+        prefix: /mockserver/
+    rewrite:
+      uri: '/'
+    route:
+    - destination:
+        host: mockserver-svc
+        port:
+          number: 80

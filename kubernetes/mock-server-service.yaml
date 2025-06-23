@@ -1,13 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mockserver
+  name: mockserver-svc
   namespace: mockserver
+  labels:
+    app: mockserver
 spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
   selector:
     app: mockserver
-  ports:
-    - protocol: TCP
-      port: 8000
-      targetPort: 8000
-  type: NodePort
