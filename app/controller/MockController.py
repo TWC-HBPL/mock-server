@@ -34,7 +34,25 @@ async def handle_mock_form(
         method: str = Form(...),
         response: str = Form(...)
 ):
-    success, msg = save_mock_response(path, method.upper(), response)
+    # Extract query params from form data if present
+    form = await request.form()
+    query_params = {}
+    for key in form.keys():
+        if key.startswith("query_"):
+            param_name = key[6:]
+            param_value = form[key]
+            if param_value:
+                query_params[param_name] = param_value
+
+    # Build query string if any query params
+    if query_params:
+        from urllib.parse import urlencode
+        query_string = urlencode(query_params)
+        full_path = f"{path}?{query_string}"
+    else:
+        full_path = path
+
+    success, msg = save_mock_response(full_path, method.upper(), response)
     return templates.TemplateResponse("mock_form.html", {
         "request": request,
         "message": msg
