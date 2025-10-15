@@ -100,7 +100,12 @@ async def update_mock_from_ui(
 @router.api_route("/mocked/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def serve_mock(path: str, request: Request):
     method = request.method.upper()
-    full_path = f"/{path}"
+    # Reconstruct full path with query string if present
+    query_string = request.url.query
+    if query_string:
+        full_path = f"/{path}?{query_string}"
+    else:
+        full_path = f"/{path}"
     mock = get_mock_response(full_path, method)
 
     # Log request
