@@ -13,9 +13,10 @@
             <th>Method</th>
             <th>Response</th>
             <th>Action</th>
+            <th style="max-width:200px; word-break:break-all;">cURL</th>
         </tr>
         {% for mock in mocks %}
-        <tr>
+    <tr>
     <form method="post" action="/update-mock">
         <td>
             {{ mock.id }}
@@ -43,6 +44,22 @@
         <input type="hidden" name="mock_id" value="{{ mock.id }}">
         <button type="submit" onclick="return confirm('Delete this mock?')">Delete</button>
     </form>
+
+    <!-- cURL column -->
+    <td style="font-family:monospace; font-size:0.95em; max-width:200px; word-break:break-all; white-space:pre-wrap;">
+        {% set curl_cmd = "" %}
+        {% if mock.method == 'GET' %}
+            {% set curl_cmd = "curl -X GET '" ~ request.base_url ~ 'mocked' ~ mock.path ~ "'" %}
+        {% elif mock.method == 'POST' %}
+            {% set curl_cmd = "curl -X POST '" ~ request.base_url ~ 'mocked' ~ mock.path ~ "' -d '" ~ (mock.response|replace("'", "\'") if mock.response else '') ~ "' -H 'Content-Type: application/json'" %}
+        {% elif mock.method == 'PUT' %}
+            {% set curl_cmd = "curl -X PUT '" ~ request.base_url ~ 'mocked' ~ mock.path ~ "' -d '" ~ (mock.response|replace("'", "\'") if mock.response else '') ~ "' -H 'Content-Type: application/json'" %}
+        {% elif mock.method == 'DELETE' %}
+            {% set curl_cmd = "curl -X DELETE '" ~ request.base_url ~ 'mocked' ~ mock.path ~ "'" %}
+        {% endif %}
+        <span id="curl-{{ mock.id }}">{{ curl_cmd }}</span>
+        <button type="button" onclick="copyCurl('{{ mock.id }}')">Copy</button>
+    </td>
         </td>
 </tr>
 
@@ -50,5 +67,11 @@
     </table>
 
     <p><a href="/mock-ui">Create New Mock</a></p>
+<script>
+function copyCurl(id) {
+    var text = document.getElementById('curl-' + id).innerText;
+    navigator.clipboard.writeText(text);
+}
+</script>
 </body>
 </html>
