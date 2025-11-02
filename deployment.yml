@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mockserver
+  namespace: mockserver
+  labels:
+    app: mockserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mockserver
+  template:
+    metadata:
+      labels:
+        app: mockserver
+    spec:
+      containers:
+        - name: mockserver
+          image: zubair05/mockserver:mocker_server20251102203043
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "mysql+pymysql://twcr_dev:RuexP6MGtYUQXrFc@test-db.cg1thedlqhfr.ap-south-1.rds.amazonaws.com:3306/twcr"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mockserver-svc
+  namespace: mockserver
+  labels:
+    app: mockserver
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: mockserver
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mockserver-vs
+  namespace: mockserver
+  labels:
+    app: mockserver
+spec:
+  gateways:
+  - istio-system/testing-api-gateway
+  hosts:
+  - testing-consumer-app.thirdwavecoffee.in
+  http:
+  - match:
+    - uri:
+        prefix: /mockserver/
+    rewrite:
+      uri: '/'
+    route:
+    - destination:
+        host: mockserver-svc
+        port:
+          number: 80

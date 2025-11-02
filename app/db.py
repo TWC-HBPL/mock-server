@@ -1,12 +1,18 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# SQLite DB will live in the root directory of the container
-DATABASE_URL = "sqlite:///./mock.db"
+# Get DB URL from environment variable
+# Example: export DATABASE_URL="mysql+pymysql://root:password@localhost:3306/mockserver"
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
 
 # Create SQLAlchemy engine
 engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL,
+    pool_pre_ping=True
 )
 
 # Session factory
